@@ -10,6 +10,8 @@ This package ports EGM's seven skills, ten reviewer personas, and five document
 standards to DSH. The skill text is upstream EGM; the port adds the harness
 mapping, the skill provider, and the display metadata.
 
+Guía de uso en español: [`docs/GUIA-USO.md`](docs/GUIA-USO.md).
+
 ## Install
 
 From a DSH session with full access, install this repository as a bundle:
