@@ -12,6 +12,9 @@ mapping, the skill provider, and the display metadata.
 
 Guía de uso en español: [`docs/GUIA-USO.md`](docs/GUIA-USO.md).
 
+Listed under the [`dsh-plugin`](https://github.com/topics/dsh-plugin) GitHub
+topic.
+
 ## Install
 
 From a DSH session with full access, install this repository as a bundle:
