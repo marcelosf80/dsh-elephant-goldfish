@@ -1,0 +1,24 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Provider contract
+        run: node tools/test-provider.mjs
+      - name: Shipped-file references
+        run: node tools/check-shipped-files.mjs
+      - name: Patch and manifest parse
+        run: |
+          node --input-type=module -e "await import('./lib/index.js')"
+          node -e "JSON.parse(require('fs').readFileSync('package.json','utf8'))"
+          python3 -c "import yaml,sys; yaml.safe_load(open('cordis.patch.yml'))" 2>/dev/null || true

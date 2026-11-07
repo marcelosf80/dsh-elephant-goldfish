@@ -1,0 +1,53 @@
+{
+  "name": "dsh-elephant-goldfish",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Elephant-Goldfish Model skills for DeepSeek Harness: draft specifications with full context, then review them with fresh-context Goldfish reviewers.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcelosf80/dsh-elephant-goldfish.git"
+  },
+  "homepage": "https://github.com/marcelosf80/dsh-elephant-goldfish#readme",
+  "bugs": {
+    "url": "https://github.com/marcelosf80/dsh-elephant-goldfish/issues"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-bundle",
+    "elephant-goldfish-model",
+    "egm",
+    "skills",
+    "design-review"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "lib/index.js",
+    "cordis.patch.yml",
+    "skills",
+    "agents",
+    "resources",
+    "docs",
+    "locale",
+    "icon.svg",
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "VERIFICATION.md"
+  ],
+  "scripts": {
+    "test": "node tools/test-provider.mjs && node tools/check-shipped-files.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+dsh-elephant-goldfish packages the Elephant-Goldfish Model (EGM) for DeepSeek
+Harness.
+
+EGM content
+-----------
+The following files are copied from https://github.com/google/elephant-goldfish-model
+(version 0.1.1) and remain Copyright 2026 Google LLC, licensed under the Apache
+License, Version 2.0:
+
+  skills/, agents/, resources/, LICENSE, icon.svg
+
+Local changes to that content are limited to: the DeepSeek Harness pointer line
+at the top of each skills/*/SKILL.md, the delegation sentence naming the
+`subagent` tool, the link that used to point at docs/harnesses.md, the
+invocation frontmatter of the four supporting skills (egm-resolve,
+egm-review-loop, egm-bootstrap, egm-drift-report), the Claude/Codex command
+forms rewritten to the DSH form (`/egm-<name>`), the `ask_question` tool name
+rewritten to `ask_user_question`, one inline-scout clause at
+egm-bootstrap Step 4 (a worker cannot delegate on DSH), and one "never spawn
+egm-synthesizer" note at egm-brainstorm Step 2 (the same direct-dispatch rule
+docs/dsh.md states). The review protocol, personas, and document standards are
+otherwise unmodified.
+
+Port code
+---------
+lib/index.js, cordis.patch.yml, package.json, docs/dsh.md, locale/, and
+README.md are the DeepSeek Harness integration written for this package. They
+are provided under the same Apache License, Version 2.0.
+
+This is an unofficial port. The Elephant-Goldfish Model is not an officially
+supported Google product, and neither is this bundle.
