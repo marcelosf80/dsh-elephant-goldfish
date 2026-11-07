@@ -1,10 +1,12 @@
 # Verification record
 
 Environment: DeepSeek Harness `0.2.2-rc.1`, profile `desktop` on Windows, Node
-`v24.15.0`. Recorded 2026-11-07. Install source: this directory, linked into the
-profile as `link:C:/Users/marce/OneDrive/Desktop/plug-in elefant/bundle`.
+`v24.15.0`. Recorded 2026-11-07.
 
-## 1. Installation
+Two install sources were exercised: a local `link:` checkout during development
+(§1) and the published GitHub repository (final, §1.1).
+
+## 1. Local link installation (development)
 
 `plugin_manager { action: "install_bundle", target: "<this directory>" }` returned:
 
@@ -19,6 +21,37 @@ the package manager exit code was 0. The profile now records the bundle:
 - `~/.dsh/profiles/desktop/package.json` → `dependencies["dsh-elephant-goldfish"] = "link:.../bundle"` and `dsh.profile.bundles` includes `dsh-elephant-goldfish`.
 - `plugin_manager { action: "list_bundles" }` → entry `dsh-elephant-goldfish`, `enabled: true`, `installed: true`, rows `[{rowId: "egm", moduleName: "dsh-elephant-goldfish", entryId: "include:egm"}]`.
 - `cordis_inspect_query` `Config.listConfigs {name: "dsh-elephant-goldfish"}` → one entry `include:egm`, `patchId: "egm"`, `status: "absent"` (the row exists and exports no config schema, which is what `absent` reports here).
+
+### 1.1 Final installation from GitHub
+
+`plugin_manager { action: "install_bundle", target: "github:marcelosf80/dsh-elephant-goldfish" }`
+installed the published package: pnpm reported `+ dsh-elephant-goldfish 0.1.1`
+and the profile dependency became
+`"dsh-elephant-goldfish": "github:marcelosf80/dsh-elephant-goldfish"`.
+
+The installed copy at
+`~/.dsh/profiles/desktop/node_modules/dsh-elephant-goldfish` contains all 45
+package files. A harness that imports that installed copy directly lists the
+seven skills and loads every body with the root substituted, which proves the
+published artifact is complete and self-contained:
+
+```text
+installed package: 7 skills from egm
+  egm-bootstrap        model=true  body=24119 root-ok=true
+  egm-brainstorm       model=false body=15110 root-ok=true
+  egm-draft            model=false body=17044 root-ok=true
+  egm-drift-report     model=true  body=2885 root-ok=true
+  egm-resolve          model=true  body=8285 root-ok=true
+  egm-review           model=false body=24050 root-ok=true
+  egm-review-loop      model=true  body=10016 root-ok=true
+```
+
+One operational note: switching a profile from the local `link:` install to the
+GitHub install inside the same Harness process reported `application: failed`
+with `cannot read the skills directory at <old link path>`. The running process
+still held the module generation imported from the old path; the new package was
+installed correctly on disk. A Harness restart resolves the GitHub copy and
+activates it. Plan for one restart whenever the install source changes.
 
 ## 2. Live skill registration
 

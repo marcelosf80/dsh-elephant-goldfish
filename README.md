@@ -33,6 +33,8 @@ and survive restart; remove it with
 Updating a GitHub install: re-run `install_bundle` with the same target after
 pushing a new commit, then restart the Harness if the `lib/` code changed
 (a body-only skill edit needs no restart, because bodies are re-read on load).
+Switching a profile between a local link and the GitHub source always needs one
+Harness restart: the running process keeps the module generation it imported.
 
 ## Use it
 
