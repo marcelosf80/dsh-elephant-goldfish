@@ -2,7 +2,7 @@
 // user's working directory when it is a user artifact path.
 // Run with: node _tools/check-shipped-files.mjs
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 
 const root = resolve(import.meta.dirname, '..')
 const missing = []
@@ -35,7 +35,10 @@ const resourceDocs = walk(join(root, 'resources'))
 const allDocs = [...skillDocs, ...agentDocs, ...resourceDocs, join(root, 'docs', 'dsh.md')]
 
 for (const doc of allDocs) {
-  const isSkill = doc.includes(`${root}\\skills\\`)
+  // A skill document resolves `references/...` against its own directory; any
+  // other bundle document resolves against the bundle root. Compare with the
+  // platform separator so this passes on Linux CI too.
+  const isSkill = relative(root, doc).startsWith(`skills${sep}`)
   const text = readFileSync(doc, 'utf8')
   for (const pattern of patterns) {
     for (const match of text.matchAll(pattern)) {
@@ -46,7 +49,7 @@ for (const doc of allDocs) {
       if (userArtifacts.test(referenced)) continue
       const candidates = isSkill ? [join(root, referenced), join(doc, '..', referenced)] : [join(root, referenced)]
       if (candidates.some((candidate) => existsSync(candidate) && statSync(candidate).isFile())) continue
-      missing.push(`${doc.replace(root + '\\', '')} -> ${referenced}`)
+      missing.push(`${relative(root, doc)} -> ${referenced}`)
     }
   }
 }
